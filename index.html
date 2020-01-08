@@ -1,0 +1,119 @@
+<html>
+
+<head>
+    <title>
+        battery master
+    </title>
+    <link href="styles/main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <input type="number" id="level" style="z-index: 10;"></input>
+    <div id="battery">
+        <div id="battery-top">
+
+        </div>
+        <div id="battery-top-back">
+
+        </div>
+        <div id="battery-body">
+            <span id="status"></span>
+            <span id="levelVal"></span>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const battery = window.navigator.getBattery()
+    const levelMax = 181;
+    const one = levelMax / 100;
+    let status;
+
+    //电池电量变化
+    battery.then((b) => {
+        init(b)
+        b.addEventListener('levelchange', function () {
+            console.log('电池电量发生变化');
+            console.log('当前电量值：' + b.level * 100);
+            levelChange(b)
+        });
+        b.addEventListener('chargingchange', function () {
+            console.log("充电状态发生变化");
+            console.log(b.charging);
+
+            setStatus(b.charging)
+        });
+
+        //模拟电量变化
+        let input = document.getElementById('level')
+        input.onchange = function (e) {
+            console.log(e.target.value);
+            setLevel(e.target.value / 100)
+            setTxt(e.target.value)
+            setStatus(b.charging, e.target.value / 100)
+
+            console.log('电池电量发生变化');
+            console.log('当前电量值：' + b.level * 100);
+        }
+
+        //初始化
+        function init(b) {
+            setLevel(b.level)
+            setTxt(b.level * 100)
+            setStatus(b.charging, b.level)
+        }
+        //电量变化
+        function levelChange(b) {
+            setStatus(b.charging, b.level)
+            setLevel(b.level)
+            setTxt(b.level * 100)
+        }
+        function setLevel(batteryLevel) {
+            let level = batteryLevel * 100;
+            if (level > 100) {
+                level = 100;
+            }
+            if (level < 0) {
+                level = 0;
+            }
+            // 剩余电量
+            const left = levelMax - level * one;
+            console.log(left);
+            let leftElm = document.getElementById('battery-body')
+            let batteryElm = document.getElementById('battery')
+            if (level <= 30) {
+                batteryElm.style['background-color'] = 'rgb(211, 53, 53)'
+            } else {
+                batteryElm.style['background-color'] = 'rgb(27, 250, 83)'
+            }
+            leftElm.style.height = Math.trunc(left)
+        }
+        function setTxt(level) {
+            if (level > 100) {
+                level = 100;
+            }
+            if (level < 0) {
+                level = 0;
+            }
+            let levelValElm = document.getElementById('levelVal')
+            levelValElm.innerText = level + '%';
+        }
+        function setStatus(status, level) {
+            if (level * 100 > 100) {
+                level = 1;
+            }
+            if (level < 0) {
+                level = 0;
+            }
+            let levelValElm = document.getElementById('status')
+            if (level && b.charging && Math.trunc(level * 100) === 100) {
+                levelValElm.innerText = '已充满 √'
+            } else {
+                levelValElm.innerText = status ? '正在充电...' : ''
+            }
+        }
+    })
+
+</script>

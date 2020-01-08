@@ -1,0 +1,47 @@
+
+#battery
+{
+    background-color: rgb(27, 250, 83);
+    height: 200px;
+    width: 150px;
+    margin: 200px auto;
+    /* border: 1px solid #ccc; */
+    border-radius: 16px;
+}
+#battery-top
+{
+    background-color: rgb(34, 34, 34);
+    height: 20px;
+    width: 100px;
+    margin: -21px auto 0px;
+    position: relative;
+    z-index: 2;
+}
+#battery-top-back
+{
+    background-color: rgb(255, 255, 255);
+    height: 20px;
+    width: 150px;
+    margin: -21px auto 0px;
+    position: relative;
+     z-index: 1;
+}
+#battery-body
+{
+    background-color:rgb(206, 204, 204);
+    height: 100px;
+    width: 150px;
+    /* border-radius: 16px; */
+}
+#levelVal
+{
+   position: absolute;
+    margin-top: 79px;
+    margin-left: 55px;
+}
+#status
+{
+   position: absolute;
+    margin-top: 49px;
+    margin-left: 42px;
+}
